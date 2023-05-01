@@ -59,6 +59,17 @@ namespace CalculatingDefiniteIntegrals
             return sum * h / 3;
         }
 
+        public static double Carlo(Func<double, double> func, double left, double right, int n = 1000000)
+        {
+            var sum = 0d;
+            var rnd = new Random();
+            for (int i = 0; i < n; i++)
+            {
+                sum += func((right - left) * rnd.NextDouble() + left);
+            }
+            return (sum / n * (right - left));
+        }
+
         private static bool IsOdd(this int i) => (i & 1) == 0;
     }
 }

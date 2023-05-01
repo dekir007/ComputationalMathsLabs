@@ -6,4 +6,7 @@ Console.WriteLine(Integrals.Rectangle(f, 0, 1));
 Console.WriteLine(Integrals.Trapezoid(f, 0, 1));
 Console.WriteLine(Integrals.Simpson(f, 0, 1));
 
+Console.WriteLine(Integrals.Carlo(f, 0, 1, 1000000));
+
+
 Console.ReadKey();
