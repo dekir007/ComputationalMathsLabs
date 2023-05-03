@@ -1,75 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CalculatingDefiniteIntegrals
+﻿namespace CalculatingDefiniteIntegrals
 {
     internal static class Integrals
     {
-        public static double Rectangle(Func<double, double> func, double left, double right, double h = 0.0001)
+        public static double Rectangle(Func<double, double> func, double a, double b, int n = 8)
         {
-            if (right - left < h)
+            Func<double, double> integral = (double n) =>
             {
-                return 0;
-            }
-
-            double sum = 0d;
-
-            for (int i = 0; i < (int)((right - left) / h); i++)
-            {
-                sum += func(left + i * h + h / 2);
-            }
-
-            return sum * h;
+                double sum = 0d;
+                
+                var h = (b - a) / n;
+                
+                for (int i = 0; i < n; i++)
+                {
+                    sum += func(a + (i + 0.5) * h );
+                }
+                return sum * h;
+            };
+            return integral(n);
         }
 
-        public static double Trapezoid(Func<double, double> func, double left, double right, double h = 0.0001)
+        public static double Trapezoid(Func<double, double> func, double a, double b, int n = 9)
         {
-            if (right - left < h)
+            Func<double, double> integral = (double n) =>
             {
-                return 0;
-            }
+                double sum = 0d;
 
-            double sum = 0d;
+                var h = (b - a) / n;
 
-            for (int i = 1; i < (int)((right - left) / h) - 1; i++)
-            {
-                sum += func(left + i * h);
-            }
-
-            return (sum + 0.5 * (func(left) + func(right))) * h;
+                for (int i = 0; i < n-1; i++)
+                {
+                    sum += func(a + (i + 1) * h);
+                }
+                return (sum + 0.5 * (func(a) + func(b))) * h;
+            };
+            return integral(n);
         }
 
-        public static double Simpson(Func<double, double> func, double left, double right, double h = 0.0001)
+        public static double Simpson(Func<double, double> func, double a, double b, int n = 4)
         {
-            if (right - left < h)
+            Func<double, double> integral = (double n) =>
             {
-                return 0;
-            }
+                double sum = func(a) + func(b);
 
-            double sum = 0d;
+                var h = (b - a) / n;
 
-            for (int i = 0; i < (int)((right - left) / h); i++)
-            {
-                sum += func(left + h * i) * (i.IsOdd() ? 2 : 4);
-            }
+                for (int i = 0; i < n-1; i++)
+                {
+                    sum += func(a + h * (i + 1)) * (i.IsEven() ? 4 : 2);
+                }
 
-            return sum * h / 3;
+                return sum * h / 3;
+            };
+
+            return integral(n);
         }
 
-        public static double Carlo(Func<double, double> func, double left, double right, int n = 1000000)
+        public static double Carlo(Func<double, double> func, double a, double b, int n = 750_000)
         {
             var sum = 0d;
             var rnd = new Random();
             for (int i = 0; i < n; i++)
             {
-                sum += func((right - left) * rnd.NextDouble() + left);
+                sum += func((b - a) * rnd.NextDouble() + a);
             }
-            return (sum / n * (right - left));
+            return (sum / n * (b - a));
         }
 
-        private static bool IsOdd(this int i) => (i & 1) == 0;
+        private static bool IsEven(this int i) => (i & 1) == 0;
     }
 }
