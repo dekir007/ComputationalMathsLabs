@@ -1,15 +1,20 @@
-﻿double a = 2, b = 3;
-
-Func<double, double, double> d = (t, y) => (2 * t - 5) / t / t * y + 5;
-
+﻿using GridMethodDiff;
+var y = RungeKutta.Euler(2, 3, (t, y) => (2 * t - 5) / t / t * y + 5, 4);
 double h = 0.01;
+int a1 = (int)(0.2 / h),
+    a2 = (int)(0.4 / h),
+    a3 = (int)(0.6 / h),
+    a4 = (int)(0.8 / h),
+    a5 = (int)(1 / h);
 
-var n = (int)((b - a) / h);
-var y = Enumerable.Repeat(4d, n+1).ToList();
+Console.WriteLine($"{y[a1]} {y[a2]} {y[a3]} {y[a4]} {y[a5]}");
 
-for (int i = 1; i <= n; i++)
-{
-    y[i] = d(a + h * i, y[i - 1]) * h + y[i - 1];
-}
-Console.WriteLine($"{y[20]} {y[40]} {y[60]} {y[80]} {y[100]}");
+y = RungeKutta.RK4(2, 3, (t, y) => (2 * t - 5) / t / t * y + 5, 4);
+
+Console.WriteLine($"{y[a1]} {y[a2]} {y[a3]} {y[a4]} {y[a5]}");
+
+y = RungeKutta.RK2(2, 3, (t, y) => (2 * t - 5) / t / t * y + 5, 4);
+
+Console.WriteLine($"{y[a1]} {y[a2]} {y[a3]} {y[a4]} {y[a5]}");
+
 Console.ReadKey();
