@@ -31,5 +31,8 @@ var m4 = new Matrix(new List<List<double>>
 var freeVector3 = new List<double>() { 1, 3, 3, 3 };
 var freeVector2 = new List<double>() { 2, 0, -2 };
 var freeVector = new List<double>() { -3, 2, -2, -1 };
+
+//Console.WriteLine(new Gauss(m1, freeVector2).Solve().Result);
+Console.WriteLine(string.Join(" ", new Seidel(m2, freeVector).Solve(0.01)));
 //Console.WriteLine(new Gauss(m3, freeVector2).Solve().Result);
 Console.WriteLine(new Gauss(m2, freeVector).Solve().Result);

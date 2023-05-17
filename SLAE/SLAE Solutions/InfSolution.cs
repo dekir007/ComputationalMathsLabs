@@ -1,6 +1,6 @@
 ﻿namespace SLAE.SLAE_Solutions
 {
-    internal class InfSolution
+    internal class InfSolution // todo: rename
     {
         public List<(double coeff, int index)> solution;
         public double FreeValue;
