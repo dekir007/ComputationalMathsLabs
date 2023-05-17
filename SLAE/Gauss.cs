@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SLAE.SLAE_Solutions;
 
 namespace SLAE
 {
@@ -37,27 +33,26 @@ namespace SLAE
             return SystemMatrix.Rank == Extended.Rank;
         }
 
-        public (SolutionsCount count, List<double> results) Solve()
+        public ISolution Solve()
         {
-            List<double> results = new List<double>();
             var solutionsCount = GetCountOfSolutions();
             switch (solutionsCount)
             {
                 case SolutionsCount.None:
-                    break;
+                    return new NoneSolution();
+
                 case SolutionsCount.Single:
-                    results = SolveSingle();
-                    break;
+                    return SolveSingle();
+
                 case SolutionsCount.Infinity:
-                    results = SolveInfinite();
-                    break;
+                    return SolveInfinite();
+
                 default:
                     throw new Exception("There are only three cases");
             }
-            return (solutionsCount, results);
         }
 
-        private List<double> SolveSingle()
+        private ISolution SolveSingle()
         {
             Extended = Extended.ToUpperTriangle();
             Extended = Extended.ToLowerTriangle();
@@ -68,12 +63,54 @@ namespace SLAE
                 Extended[i][i] = 1d;
             }
 
-            return Extended.nums.Select(x => x.Last()).ToList();
+            return new SingleSolution(Extended.nums.Select(x => x.Last()).ToList());
         }
 
-        private List<double> SolveInfinite()
+        private ISolution SolveInfinite()
         {
-            return new List<double>();
+            Extended = Extended.ToUpperTriangle();
+            Extended = Extended.ToLowerTriangle();
+
+            List<double> mainDiagonal = Extended.GetMainDiagonal();
+            var extras = new List<int>(); // "лишние" переменные, через которые будем выражать беск. кол-во решений
+            for (int i = 0; i < mainDiagonal.Count; i++)
+            {
+                double coeff = mainDiagonal[i];
+                if (coeff == 0 || coeff == double.NaN)
+                    extras.Add(i);
+            }
+
+            for (int i = 0; i < Extended.RowsCount; i++)
+            {
+                var divisor = Extended[i][i];
+                for (int j = 0; j < Extended.ColumnsCount; j++)
+                {
+                    Extended[i][j] /= divisor;
+                } // делим всю строку на коэфф при элементе главной диагонали
+                Extended[i, i] = 1d;
+            }
+            
+            var infSolutions = new InfiniteSolutions();
+            for (int i = 0; i < Extended.RowsCount; ++i)
+            {
+                if (extras.Contains(i))
+                {
+                    continue;
+                }
+
+                infSolutions.AddSolution(i, Extended[i][^1]);
+
+                foreach (var extra in extras)
+                {
+                    if (Math.Abs(Extended[i][extra]) < 1e-8)
+                    {
+                        continue;
+                    }
+                    infSolutions.AddComponentToSolution(i, Extended[i][extra] * -1d, extra);
+                }
+            }
+
+            return infSolutions;
         }
     }
 }
