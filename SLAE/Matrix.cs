@@ -1,8 +1,9 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Text;
 
 namespace SLAE
 {
-    internal class Matrix
+    internal class Matrix : IEnumerable<List<double>>
     {
         public List<List<double>> nums;
 
@@ -146,5 +147,9 @@ namespace SLAE
             }
             return str.ToString();
         }
+
+        public IEnumerator<List<double>> GetEnumerator() => nums.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => nums.GetEnumerator(); 
     }
 }

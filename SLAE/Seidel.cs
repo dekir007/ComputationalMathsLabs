@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SLAE.SLAE_Solutions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace SLAE
                 .Aggregate(0d, (accumulated, current) => accumulated + current);
         }
 
-        public List<double> Solve(double eps)
+        public SingleSolution Solve(double eps)
         {
             double curEps = 0d;
             Approximation = FreeVector.Zip(SystemMatrix.GetMainDiagonal()).Select(elem => elem.First / elem.Second).ToList();
@@ -44,7 +45,7 @@ namespace SLAE
             } 
             while (curEps > eps);
             
-            return Approximation;
+            return new SingleSolution(Approximation);
         }
     }
 }
