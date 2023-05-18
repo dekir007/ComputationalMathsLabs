@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GridMethodDiff
+﻿namespace GridMethodDiff
 {
     internal class RungeKutta
     {
@@ -25,15 +19,15 @@ namespace GridMethodDiff
             var n = (int)((b - a) / h);
             var y = Enumerable.Repeat(y0, n + 1).ToList();
 
-            var xn = a + h;
-            for (int i = 1; i <= n; i++)
+            var xn = a;
+            for (int i = 0; i < n; i++)
             {
-                var k1 = g(xn, y[i - 1]);
-                var k2 = g(xn + h / 2, y[i - 1] + k1 * h / 2);
-                var k3 = g(xn + h / 2, y[i - 1] + k2 * h / 2);
-                var k4 = g(xn + h / 2, y[i - 1] + k3 * h / 2);
+                var k1 = g(xn, y[i]);
+                var k2 = g(xn + h / 2, y[i] + k1 * h / 2);
+                var k3 = g(xn + h / 2, y[i] + k2 * h / 2);
+                var k4 = g(xn + h, y[i] + k3 * h);
 
-                y[i] = (k1 + 2 * k2 + 2 * k3 + k4) * h / 6 + y[i - 1];
+                y[i + 1] = (k1 + 2 * k2 + 2 * k3 + k4) * h / 6d + y[i];
                 xn += h;
             }
 
@@ -44,14 +38,14 @@ namespace GridMethodDiff
             var n = (int)((b - a) / h);
             var y = Enumerable.Repeat(y0, n + 1).ToList();
 
-            var xn = a + h;
-            double alpha = 0.5; // midpoint method
-            for (int i = 1; i <= n; i++)
+            var xn = a;
+            double alpha = .5; // midpoint method
+            for (int i = 0; i < n; i++)
             {
-                var k1 = g(xn, y[i - 1]);
-                var k2 = g(xn + h / 2, y[i - 1] + k1 * h / 2);
+                var k1 = g(xn, y[i]);
+                var k2 = g(xn + h / 2, y[i] + k1 * h / 2);
 
-                y[i] = ((1-0.5/alpha)*k1 + 0.5/alpha * k2) * h  + y[i - 1];
+                y[i + 1] = ((1d-.5d/alpha)*k1 + .5d/alpha * k2) * h  + y[i];
                 xn += h;
             }
             
