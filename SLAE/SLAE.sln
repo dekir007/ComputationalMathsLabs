@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLAE", "SLAE.csproj", "{79340E4F-61C8-4697-809D-925EB1BA264A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79340E4F-61C8-4697-809D-925EB1BA264A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79340E4F-61C8-4697-809D-925EB1BA264A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79340E4F-61C8-4697-809D-925EB1BA264A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79340E4F-61C8-4697-809D-925EB1BA264A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66D806F3-56EE-457A-B329-E82926E9F7D6}
+	EndGlobalSection
+EndGlobal
