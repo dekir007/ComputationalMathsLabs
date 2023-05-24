@@ -1,9 +1,4 @@
 ﻿using SLAE.SLAE_Solutions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SLAE
 {
@@ -31,6 +26,32 @@ namespace SLAE
         public SingleSolution Solve(double eps)
         {
             double curEps = 0d;
+        
+            // max coeffs on main diagonal
+            for (int i = 0; i < SystemMatrix.Count(); i++)
+            {
+                var maxElement = SystemMatrix[i, i];
+                var maxIndex = i;
+                for (int j = i + 1; j < SystemMatrix.Count(); j++)
+                {
+                    if (SystemMatrix[j, i] > SystemMatrix[maxIndex, i])
+                    {
+                        maxIndex = j;
+                    }
+                }
+
+                if (maxIndex != i)
+                {
+                    var temp = SystemMatrix[maxIndex];
+                    SystemMatrix[maxIndex] = SystemMatrix[i];
+                    SystemMatrix[i] = temp;
+
+                    var tempB = FreeVector[i];
+                    FreeVector[i] = FreeVector[maxIndex];
+                    FreeVector[maxIndex] = tempB;
+                }
+            }
+
             Approximation = FreeVector.Zip(SystemMatrix.GetMainDiagonal()).Select(elem => elem.First / elem.Second).ToList();
             do
             {

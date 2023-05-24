@@ -72,12 +72,12 @@ namespace SLAE
             Extended = Extended.ToLowerTriangle();
 
             List<double> mainDiagonal = Extended.GetMainDiagonal();
-            var extras = new List<int>(); // "лишние" переменные, через которые будем выражать беск. кол-во решений
+            var extras = Enumerable.Range(0, Extended.ColumnsCount - 1).ToList(); // "лишние" переменные, через которые будем выражать беск. кол-во решений
             for (int i = 0; i < mainDiagonal.Count; i++)
             {
                 double coeff = mainDiagonal[i];
-                if (coeff == 0 || coeff == double.NaN)
-                    extras.Add(i);
+                if (coeff != 0 || coeff != double.NaN)
+                    extras.Remove(i);
             }
 
             for (int i = 0; i < Extended.RowsCount; i++)

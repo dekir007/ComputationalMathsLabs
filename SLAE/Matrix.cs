@@ -53,14 +53,27 @@ namespace SLAE
             {
                 for (int k = 0; k < i; k++)
                 {
-                    if (_nums[k][k] != 0d)
+                    if (_nums[k][k] == 0d)
                     {
-                        double multiplier = _nums[i][k] / _nums[k][k];
-
-                        for (int j = 0; j < _nums[0].Count; j++)
+                        //меняем строчки
+                        for (int j = k + 1; j < _nums.Count(); j++)
                         {
-                            _nums[i][j] -= _nums[k][j] * multiplier;
+                            if (_nums[j][k] != 0d)
+                            {
+                                //swap j and k rows
+                                var temp = _nums[k]; // for k
+                                _nums[k] = _nums[j];
+                                _nums[j] = temp;
+                                break;
+                            }
                         }
+
+                    }
+                    double multiplier = _nums[i][k] / _nums[k][k];
+
+                    for (int j = 0; j < _nums[0].Count; j++)
+                    {
+                        _nums[i][j] -= _nums[k][j] * multiplier;
                     }
                 }
                 //Console.WriteLine(new Matrix(_nums));
