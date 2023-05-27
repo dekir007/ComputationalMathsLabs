@@ -1,4 +1,10 @@
-﻿namespace GridMethodDiff
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ODE_with_plotting
 {
     internal class RungeKutta
     {
@@ -7,9 +13,9 @@
             var n = (int)((b - a) / h);
             var y = Enumerable.Repeat(y0, n + 1).ToList();
 
-            for (int i = 1; i <= n; i++)
+            for (int i = 0; i < n; i++)
             {
-                y[i] = dy(a + h * i, y[i - 1]) * h + y[i - 1];
+                y[i + 1] = dy(a + h * i, y[i]) * h + y[i];
             }
 
             return y;
@@ -45,10 +51,10 @@
                 var k1 = g(xn, y[i]);
                 var k2 = g(xn + h / 2, y[i] + k1 * h / 2);
 
-                y[i + 1] = ((1d-.5d/alpha)*k1 + .5d/alpha * k2) * h  + y[i];
+                y[i + 1] = ((1d - .5d / alpha) * k1 + .5d / alpha * k2) * h + y[i];
                 xn += h;
             }
-            
+
             return y;
         }
     }
